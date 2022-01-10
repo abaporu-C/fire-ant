@@ -1,0 +1,44 @@
+/*************
+Root
+*************/
+:root{
+    --gray: #DDDDDF;
+}
+
+/*************
+Pseudo-Attributes
+*************/
+::placeholder, .text-box{
+    font-weight:bold;
+    color: black;
+}
+
+/*************
+Classes
+*************/
+.container{
+    display: flex;
+    flex-direction: column;
+    height: 70vh;
+    margin: auto;
+    width: 80vw;
+}
+
+.text-box{
+    background-color: var(--gray);
+    border: 0 black solid;
+    border-radius: 35px;    
+    height: 5vh;
+    margin: 2vh 0;
+    padding: 2px 13px;
+}
+
+.btn{
+    border: 1px solid black;
+    border-radius: 20px;
+    display: inline-block;
+    left: 55vw;
+    padding: 5px;
+    position: relative;
+    width: 20vw;
+}
