@@ -1,3 +1,5 @@
+require("dotenv").config()
+const {MONGO_PASS} = process.env
 const mongoose = require('mongoose');
 
 module.exports = {
@@ -10,7 +12,7 @@ module.exports = {
         }
 
         //MongoDB Atlas URI
-        const mongo_uri = 'mongodb+srv://fire-ant:3un40s0u4b4p0ru!@react-server.j5m6o.mongodb.net/test';
+        const mongo_uri = `mongodb+srv://fire-ant:${MONGO_PASS}@react-server.j5m6o.mongodb.net/test`;
 
         //Connection and options
         mongoose.connect(mongo_uri, dbOptions).catch(err => {

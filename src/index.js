@@ -3,9 +3,11 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Routes, Route} from 'react-router-dom';  
 import './index.css';
 import App from './App';
-import {Login} from './routes/Auth/login.jsx';
-import { Register } from './routes/Auth/register'; 
+import {Login} from './Routes/Auth/login.jsx';
+import {Register} from './Routes/Auth/register.jsx';
+import { Landing } from './Routes/landing'; 
 import {WithAuth} from './Components/HigherOrder/WithAuth.jsx'
+import {Welcome} from './Routes/Auth/welcome';
 import reportWebVitals from './reportWebVitals';
 
 const ProtectedApp = WithAuth(App);
@@ -14,8 +16,10 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route index element={<Login />} />
+        <Route index element={<Landing />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/confirm/:confirmationCode" element={<Welcome />} />
         <Route path="/home" element={<ProtectedApp />} />
         <Route path="*" element={<main><h1>404: No Matches for this URL</h1></main>} />
       </Routes>

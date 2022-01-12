@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const UserSchema = new mongoose.Schema({
-    username: {type: String, unique: true},
-    email: {type: String, trim: true, index:true, required: true, unique: true},
-    password: {type: String, required: true},
+    u: {type: String, unique: true, alias: 'username'},
+    e: {type: String, trim: true, index:true, required: true, unique: true, alias: "email"},
+    p: {type: String, required: true, alias: 'password'},
     status: {type: String, enum: ["Pending", "Active"], default: "Pending"},
     confirmationCode: {type: String, unique: true}
 })
@@ -25,12 +25,12 @@ UserSchema.pre('save', function(next) {
       // Saving reference to this because of changing scopes
       const document = this;
       bcrypt.hash(document.password, 10,
-        function(err, hashedPassword) {
+        function(err, hash) {
         if (err) {
           next(err);
         }
         else {
-          document.password = hashedPassword;
+          document.password = hash;
           next();
         }
       });

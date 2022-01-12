@@ -1,14 +1,12 @@
-import { register, authenticate } from "./Controllers/authController";
-
 const db = require('./Utils/mongoose');
-const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const cors = require("cors");
 const express = require('express');
 const app = express();
 const port = 3001;
-const User = require('./Models/User');
 const withAuth = require('./Utils/middleware');
+const authRoutes = require('./Routes/authRoutes');
 
 //Database connection
 db.init();
@@ -16,8 +14,13 @@ db.init();
 //Utilities
 app.use(cookieParser());
 app.use(bodyParser.json());
+app.use(cors({
+    origin: "http://localhost:3000"
+}))
 
 //Routing
+authRoutes(app);
+
 app.get('/api/home', function(req, res) {
     res.send('Welcome!');
   });
@@ -25,21 +28,6 @@ app.get('/api/home', function(req, res) {
 app.get('/api/secret', withAuth, function(req, res) {
     res.send('The password is potato');
 });
-
-app.get('/checkToken', withAuth, function(req, res) {
-    res.sendStatus(200);
-  });
-
-// POST route to register a user
-app.post('/api/register', async function(req, res) {    
-    register(req, res);
-  }
-);
-
-//authenticate
-app.post('/api/authenticate', function(req, res) {    
-    authenticate(req, res);
-  });
 
 app.listen(port, () => {
     console.log(`Listening to http://localhost:${port}`)

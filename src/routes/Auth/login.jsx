@@ -1,6 +1,7 @@
 import {Link, useNavigate} from 'react-router-dom';
 import { useState } from 'react';
 import { ErrorLabel } from '../../Components/labelError';
+import {authenticate} from '../../Components/Services/authService'
 import '../../Auth.css';
 
 export const Login = () => {
@@ -10,9 +11,11 @@ export const Login = () => {
         password: "",
         message: ""
     });    
-
+    
+    //Navigation hook
     let navigate = useNavigate();
 
+    //Input Change
     const handleInputChange = (event) => {        
         const {value, name} = event.target;
         setState({
@@ -23,16 +26,8 @@ export const Login = () => {
 
     const onSubmit = (event) => {        
         event.preventDefault();
-        fetch('/api/authenticate', {
-            method: 'POST',
-            body: JSON.stringify({
-                email: state.email,
-                password: state.password
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(async (res) => {
+        authenticate(state)
+        .then(async (res) => {
             if(res.status === 200){
                 navigate("/home");
             } else{  

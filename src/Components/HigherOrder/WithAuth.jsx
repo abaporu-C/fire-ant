@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import {  Navigate } from 'react-router-dom';
+import { checkToken } from '../Services/authService';
 
 export function WithAuth(ComponentToProtect) {  return class extends Component {
   constructor() {
@@ -11,7 +12,7 @@ export function WithAuth(ComponentToProtect) {  return class extends Component {
   }    
   
   componentDidMount() {
-    fetch('/checkToken')
+    checkToken()
       .then(res => {
         if (res.status === 200) {
           this.setState({ loading: false });
@@ -32,7 +33,7 @@ export function WithAuth(ComponentToProtect) {  return class extends Component {
       return null;
     }
     if (redirect) {
-      return <Navigate to="/" replace={true}/>;
+      return <Navigate to="/login" replace={true}/>;
     }
     return <ComponentToProtect {...this.props} />;
   }
