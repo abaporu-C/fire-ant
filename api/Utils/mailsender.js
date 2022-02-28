@@ -10,8 +10,8 @@ const transporter = nodemailer.createTransport({
     },
 })
 
-module.exports = (name, email, confirmationCode) => {
-    console.log("Check");
+function sendConfirmationMail(name, email, confirmationCode){
+    console.log(`Sending email to ${name}...`);
     transporter.sendMail({
         from: USER,
         to: email,
@@ -20,5 +20,17 @@ module.exports = (name, email, confirmationCode) => {
                <h2>We are happy to see you join us, ${name}</h2>
                <p>Thank you for subscribing. Please confirm your email by clicking on the following link:</p>
                <a href=http://localhost:3000/confirm/${confirmationCode}>Click Here!</a>`
-    }).catch(err => console.log(err))
+    }).catch(err => {
+        if (err) console.log(err)
+        else console.log("Reset password mail sent!");        
+    })
+}
+
+function sendResetPassMail(name, email, resetCode){
+    console.log("")
+}
+
+module.exports = {
+    sendConfirmationMail,
+    sendResetPassMail,
 }

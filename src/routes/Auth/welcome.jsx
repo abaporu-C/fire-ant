@@ -1,12 +1,12 @@
-import { verifyUser } from "../../Components/Services/authService"
+import { verifyUser } from "../../Services/authService"
 import { Link, Navigate, useParams } from "react-router-dom";
 
 export const Welcome = () => {
     let params = useParams();
 
     const user = verifyUser(params.confirmationCode);    
-    console.log(user)
-    return user? (
+    
+    return !(user instanceof Error)? (
         <>
             <header className="jumbotron">
             <h3>

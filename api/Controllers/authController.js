@@ -3,7 +3,7 @@ const {SECRET} = process.env
 const codeGenerator = require('../Utils/GeneralPurposeFunctions/codeGenerator');
 const jwt = require("jsonwebtoken");
 const User = require("../Models/User");
-const sendConfirmationMail = require('../Utils/mailsender');
+const {sendConfirmationMail} = require('../Utils/mailsender');
 
 
 //Registration  
@@ -66,11 +66,30 @@ async function authenticate(req, res){
               expiresIn: '1h'
             });
             res.cookie('token', token, { httpOnly: true })
+              .setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
+              .setHeader('Access-Control-Allow-Credentials',true)
               .sendStatus(200);
           }
         });
       }
     });
+}
+
+async function resetPasswordRequest(req, res){
+  const {email} = req.body;
+
+  User.findOne({email: email}, function(err, user){
+    if(err){
+      console.log(err)
+      res.status(500).json({
+        error: "There was an error processing your request."
+      }) 
+    } else if(!user){
+      res.status(400).json({
+        error: "There is no account registered with that email, please try again."
+      })
+    }
+  });
 }
 
 //User Verification
@@ -97,5 +116,6 @@ async function authenticate(req, res){
 module.exports = {
   register,
   authenticate,
+  resetPasswordRequest,
   verifyUser
 }

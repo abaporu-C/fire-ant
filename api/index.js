@@ -15,8 +15,14 @@ db.init();
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(cors({
-    origin: "http://localhost:3000"
+    origin: "http://localhost:3000",
+    credentials: true
 }))
+
+app.options('*', cors({
+    origin: "http://localhost:3000",
+    credentials: true
+}));
 
 //Routing
 authRoutes(app);

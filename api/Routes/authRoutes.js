@@ -3,8 +3,7 @@ const withAuth = require('../Utils/middleware');
 
 module.exports = function(app){
     //Get confirmation status
-    app.post('/api/auth/confirm/:confirmationCode', function(req, res){
-        console.log("Pois eh");
+    app.post('/api/auth/confirm/:confirmationCode', function(req, res){        
         verifyUser(req, res)
     })
 
@@ -15,7 +14,7 @@ module.exports = function(app){
     app.post('/api/auth/authenticate', authenticate);
 
     //Check JWT tokens
-    app.get('/checkToken', withAuth, function(req, res) {
+    app.get('/checkToken', withAuth, function(req, res) {        
         res.sendStatus(200);
     });
 };

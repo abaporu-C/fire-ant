@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import {  Navigate } from 'react-router-dom';
-import { checkToken } from '../Services/authService';
+import { checkToken } from '../../Services/authService';
 
 export function WithAuth(ComponentToProtect) {  return class extends Component {
   constructor() {
@@ -11,20 +11,11 @@ export function WithAuth(ComponentToProtect) {  return class extends Component {
     };
   }    
   
-  componentDidMount() {
-    checkToken()
-      .then(res => {
-        if (res.status === 200) {
-          this.setState({ loading: false });
-        } else {
-          const error = new Error(res.error);
-          throw error;
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        this.setState({ loading: false, redirect: true });
-      });
+  async componentDidMount() {
+    const res = await checkToken();
+    
+    if(res.status === 200) return this.setState({loading: false});
+    if(res instanceof Error) return this.setState({loading: false, redirect: true});          
   }    
   
   render() {
@@ -35,6 +26,7 @@ export function WithAuth(ComponentToProtect) {  return class extends Component {
     if (redirect) {
       return <Navigate to="/login" replace={true}/>;
     }
+    
     return <ComponentToProtect {...this.props} />;
   }
 }}

@@ -6,7 +6,8 @@ const UserSchema = new mongoose.Schema({
     e: {type: String, trim: true, index:true, required: true, unique: true, alias: "email"},
     p: {type: String, required: true, alias: 'password'},
     status: {type: String, enum: ["Pending", "Active"], default: "Pending"},
-    confirmationCode: {type: String, unique: true}
+    confirmationCode: {type: String, unique: true},
+    resetCode: {type: String, minLength: 8, maxlength: 8, match: /^\d{8}$/}
 })
 
 UserSchema.methods.isCorrectPassword = function(password, callback){

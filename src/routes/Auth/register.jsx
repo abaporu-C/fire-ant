@@ -1,8 +1,7 @@
 import {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ErrorLabel } from '../../Components/labelError';
-import {register} from '../../Components/Services/authService'
-import '../../Auth.css';
+import {register} from '../../Services/authService'
 
 export const Register = () => {
     let [state, setState] = useState({
@@ -33,15 +32,18 @@ export const Register = () => {
         }
 
         //Makes a call to the api to register user
-        register(state)
-        .then(res => {
+        const res = register(state);
+
+        if(Object.is(res, Error)) setMessage(res.message) 
+        else navigate("/");        
+        /*.then(res => {
             console.log(res)
             if(res.status === 200) navigate("/")
             else throw new Error(res.error);
         }).catch(err => {
             console.log(err);
             setMessage("There was an error registering your data. Please try again.");
-        })
+        })*/
     }
 
     return(

@@ -1,8 +1,7 @@
 import {Link, useNavigate} from 'react-router-dom';
 import { useState } from 'react';
 import { ErrorLabel } from '../../Components/labelError';
-import {authenticate} from '../../Components/Services/authService'
-import '../../Auth.css';
+import {authenticate} from '../../Services/authService'
 
 export const Login = () => {
     //State
@@ -24,29 +23,23 @@ export const Login = () => {
         })
     }
 
-    const onSubmit = (event) => {        
+    const onSubmit = async (event) => {        
         event.preventDefault();
-        authenticate(state)
-        .then(async (res) => {
-            if(res.status === 200){
-                navigate("/home");
-            } else{  
-                const message = await res.text();                              
-                const error = new Error(message);
-                throw error;
-            }
-        }).catch(err => {
-            const message = JSON.parse(err.message);
+        const res = await authenticate(state);        
+
+        if(res instanceof Error){
             setState({
                 ...state,
-                message: `${message.error}`
-            })            
-        })
+                message: res.message
+            })
+        } else {
+            navigate("/home");
+        }
     }
 
     return(               
         <form onSubmit={onSubmit} className='container'>
-            <h1>Login</h1>
+            <h1>Login</h1>            
             <input name="email" className='text-box' type="email" placeholder="Email" value={state.email} onChange={handleInputChange} required/>
             <input name="password" className='text-box' type="password" placeholder="Password" value={state.password} onChange={handleInputChange} required/>
             <input type="submit" className='btn' value="Log In" />

@@ -24,7 +24,7 @@ ReactDOM.render(
         <Route path="*" element={<main><h1>404: No Matches for this URL</h1></main>} />
       </Routes>
     </BrowserRouter>
-    </React.StrictMode>,
+  </React.StrictMode>,
   document.getElementById('root')
 );
 
